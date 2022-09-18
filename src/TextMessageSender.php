@@ -6,12 +6,10 @@ declare(strict_types=1);
 namespace DaveLiddament\PhpstanRuleDemo;
 
 
+#[Friend(TextMessageQueueProcessor::class)]
 class TextMessageSender
 {
 
-    /*
-     * Should only be called from TextMessageQueueProcessor
-     */
     public function sendMessage(): void
     {
 

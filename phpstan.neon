@@ -8,6 +8,3 @@ services:
     class: DaveLiddament\PhpstanRules\TextMessageSenderCallCheckRule
     tags:
     - phpstan.rules.rule
-    arguments:
-        allowedCallingClass: DaveLiddament\PhpstanRuleDemo\TextMessageQueueProcessor
-        targetClass: DaveLiddament\PhpstanRuleDemo\TextMessageSender
