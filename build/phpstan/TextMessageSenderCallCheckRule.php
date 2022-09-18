@@ -6,8 +6,6 @@ declare(strict_types=1);
 
 namespace DaveLiddament\PhpstanRules;
 
-use DaveLiddament\PhpstanRuleDemo\TextMessageQueueProcessor;
-use DaveLiddament\PhpstanRuleDemo\TextMessageSender;
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
@@ -16,6 +14,12 @@ use PHPStan\Rules\RuleErrorBuilder;
 
 class TextMessageSenderCallCheckRule implements Rule
 {
+
+    public function __construct(
+        private string $allowedCallingClass,
+        private string $targetClass
+    ) {
+    }
 
     public function getNodeType(): string
     {
@@ -26,14 +30,14 @@ class TextMessageSenderCallCheckRule implements Rule
     {
         $callingClass = $scope->getClassReflection()->getName();
 
-        if ($callingClass === TextMessageQueueProcessor::class) {
+        if ($callingClass === $this->allowedCallingClass) {
             return [];
         }
 
         $type = $scope->getType($node->var);
 
         foreach ($type->getReferencedClasses() as $targetClass) {
-            if ($targetClass === TextMessageSender::class) {
+            if ($targetClass === $this->targetClass) {
                 return [
                     RuleErrorBuilder::message(
                         sprintf(
